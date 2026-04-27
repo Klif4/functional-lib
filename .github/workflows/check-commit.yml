@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: ["*"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Important : tout l'historique pour cog
+
+      - name: Install Cocogitto
+        uses: cocogitto/cocogitto-action@v3
+
+      - name: Validate commits
+        run: cog check
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        run: |
+          # tes commandes de test ici
+          echo "Tests OK"

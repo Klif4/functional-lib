@@ -1,0 +1,46 @@
+from_latest_tag = false
+ignore_merge_commits = false
+ignore_fixup_commits = true
+disable_changelog = false
+disable_bump_commit = false
+generate_mono_repository_global_tag = true
+generate_mono_repository_package_tags = true
+branch_whitelist = []
+skip_ci = "[skip ci]"
+skip_untracked = false
+pre_bump_hooks = []
+post_bump_hooks = []
+pre_package_bump_hooks = []
+post_package_bump_hooks = []
+
+[git_hooks.commit-msg]
+script = """#!/bin/sh
+set -e
+
+# Determine the name of the current branch
+# The command git rev-parse --abbrev-ref HEAD gets the current branch name.
+branch_name=$(git rev-parse --abbrev-ref HEAD)
+
+# Define the target branch where validation must occur
+TARGET_BRANCH="master"
+
+# Check if we are on the target branch
+if [ "$branch_name" = "$TARGET_BRANCH" ]; then
+    echo "-> Running cocogitto commit message validation on branch '$TARGET_BRANCH'..."
+    # Execute cocogitto verification. $1 is the path to the commit message file.
+    cog verify --file $1
+else
+    # Display a skip message and proceed without error (commit is not blocked)
+    echo "-> Skipping cocogitto validation (not on branch '$TARGET_BRANCH': $branch_name)."
+fi
+"""
+
+[commit_types]
+
+[changelog]
+path = "CHANGELOG.md"
+authors = []
+
+[bump_profiles]
+
+[packages]
