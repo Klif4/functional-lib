@@ -1,5 +1,5 @@
 {
-  "name": "@klif/functional-lib",
+  "name": "@klif4/functional-lib",
   "version": "0.1.0",
   "description": "Lightweight TypeScript functional primitives: Option and Result monads",
   "type": "module",
