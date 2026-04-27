@@ -5,6 +5,7 @@ on:
 
 permissions:
   contents: write
+  packages: write
 
 jobs:
   release:
@@ -20,6 +21,15 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://npm.pkg.github.com
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
       - name: Install Cocogitto
         uses: cocogitto/cocogitto-action@v3
 
@@ -28,6 +38,22 @@ jobs:
         run: |
           cog bump --auto
           echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+
+      - name: Update package.json version
+        run: |
+          VERSION=$(git describe --tags --abbrev=0 | sed 's/^v//')
+          npm version $VERSION --no-git-tag-version
+          git add package.json
+          git commit --amend --no-edit
+          git tag -f ${{ steps.bump.outputs.tag }}
+
+      - name: Build
+        run: yarn build
+
+      - name: Publish to GitHub Packages
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push tag
         run: git push --follow-tags
