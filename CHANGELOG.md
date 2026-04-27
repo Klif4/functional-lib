@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## 0.1.0 - 2026-04-27
+#### Bug Fixes
+- rename scope to @klif4 to match GitHub username - (8b2b8b0) - Klif
+- use npm pkg set to avoid version-unchanged error in release workflow - (04bdae1) - Klif
+#### Features
+- setup functional-lib with GitHub Packages publishing - (7a55db9) - Klif
+#### Miscellaneous Chores
+- initial commit - (477e136) - Klif4
+
+- - -
+
 ## 0.1.0 - 2026-03-10
 #### Bug Fixes
 - release workflow, bump version - (83cda65) - Klif
